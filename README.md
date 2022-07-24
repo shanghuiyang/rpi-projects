@@ -5,7 +5,7 @@
 
 Using the [rpi-devices](https://github.com/shanghuiyang/rpi-devices) library, I built several projects based on raspberry pi. The most complex app is the [smart car](/projects/car), more than 10 sensers were used to build the car. I highlight few funny apps here, please go to [projects](/projects) for all projects I developed.
 ### [Self-Dirving Car](/projects/car)
-play the video on [youtube](https://www.youtube.com/watch?v=RNqe4byzXmw).
+play the video on [youtube](https://www.youtube.com/watch?v=RNqe4byzXmw).\
 <img src="img/car.gif" width=60% height=60% />
 
 #### [GPS-Tracker](/projects/gpstracker)
