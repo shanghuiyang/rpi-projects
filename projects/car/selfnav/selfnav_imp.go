@@ -8,9 +8,9 @@ import (
 	"github.com/shanghuiyang/astar"
 	"github.com/shanghuiyang/astar/tilemap"
 	"github.com/shanghuiyang/rpi-devices/dev"
-	"github.com/shanghuiyang/rpi-projects/util/geo"
 	"github.com/shanghuiyang/rpi-projects/projects/car/car"
 	"github.com/shanghuiyang/rpi-projects/util"
+	"github.com/shanghuiyang/rpi-projects/util/geo"
 )
 
 const (

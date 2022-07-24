@@ -4,8 +4,8 @@ import (
 	"image/color"
 	"log"
 
-	"github.com/shanghuiyang/rpi-projects/projects/car/car"
 	"github.com/shanghuiyang/rpi-projects/cv"
+	"github.com/shanghuiyang/rpi-projects/projects/car/car"
 
 	"github.com/shanghuiyang/rpi-projects/util"
 	"gocv.io/x/gocv"

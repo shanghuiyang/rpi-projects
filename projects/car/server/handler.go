@@ -11,8 +11,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/shanghuiyang/rpi-projects/util/geo"
 	"github.com/shanghuiyang/rpi-projects/util"
+	"github.com/shanghuiyang/rpi-projects/util/geo"
 
 	"gocv.io/x/gocv"
 )

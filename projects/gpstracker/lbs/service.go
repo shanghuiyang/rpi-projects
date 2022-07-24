@@ -12,10 +12,10 @@ import (
 	sm "github.com/flopp/go-staticmaps"
 	"github.com/golang/geo/s2"
 	"github.com/shanghuiyang/rpi-devices/dev"
-	"github.com/shanghuiyang/rpi-projects/util/geo"
 	"github.com/shanghuiyang/rpi-projects/iot"
 	"github.com/shanghuiyang/rpi-projects/projects/gpstracker/tile"
 	"github.com/shanghuiyang/rpi-projects/util"
+	"github.com/shanghuiyang/rpi-projects/util/geo"
 )
 
 const (

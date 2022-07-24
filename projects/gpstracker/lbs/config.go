@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/shanghuiyang/rpi-projects/util/geo"
 	"github.com/shanghuiyang/rpi-projects/iot"
+	"github.com/shanghuiyang/rpi-projects/util/geo"
 )
 
 // Config ...
