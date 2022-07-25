@@ -74,11 +74,6 @@
             padding: 10px 42px;
         }
 
-        #selftracking {
-            margin-left: 45px;
-            padding: 16px 24px;
-        }
-
         .slidecontainer {
             width: 95%;
             margin-left: 10px;
@@ -181,6 +176,17 @@
                     xhr.send();
                 } else {
                     xhr.open("POST", url + "/music/off", true);
+                    xhr.send();
+                }
+            })
+            // light
+            $('#light').change(function () {
+                var xhr = new XMLHttpRequest();
+                if ($(this).prop('checked')) {
+                    xhr.open("POST", url + "/light/on", true);
+                    xhr.send();
+                } else {
+                    xhr.open("POST", url + "/light/off", true);
                     xhr.send();
                 }
             })
@@ -303,18 +309,20 @@
         <div class="text-selection-none"> <br /><br /><br /> </div>
         <div class="text-selection-none">
             <input id="selfdriving" type="checkbox" ((selfdriving-state)) ((selfdriving-enabled)) data-toggle="toggle"
-                data-on="Self-Driving" data-off="Self-Driving" data-onstyle="warning" data-width="130" data-height="45">
+                data-on="Self-Driving" data-off="Self-Driving" data-onstyle="warning" data-width="115" data-height="45">
             <input id="selftracking" type="checkbox" ((selftracking-state)) ((selftracking-enabled))
                 data-toggle="toggle" data-on="Self-Tracking" data-off="Self-Tracking" data-onstyle="warning"
+                data-width="115" data-height="45">
+            <input id="speechdriving" type="checkbox" ((speechdriving-state)) ((speechdriving-enabled))
+                data-toggle="toggle" data-on="Speech-Driving" data-off="Speech-Driving" data-onstyle="warning"
                 data-width="130" data-height="45">
         </div>
         <div class="text-selection-none"> <br /> </div>
         <div class="text-selection-none">
-            <input id="speechdriving" type="checkbox" ((speechdriving-state)) ((speechdriving-enabled))
-                data-toggle="toggle" data-on="Speech-Driving" data-off="Speech-Driving" data-onstyle="warning"
-                data-width="130" data-height="45">
             <input id="music" type="checkbox" ((music-state)) data-toggle="toggle" data-on="Music" data-off="Music"
-                data-onstyle="warning" data-width="130" data-height="45">
+                data-onstyle="warning" data-width="115" data-height="45">
+            <input id="light" type="checkbox" ((light-state)) data-toggle="toggle" data-on="Light" data-off="Light"
+                data-onstyle="warning" data-width="115" data-height="45">
         </div>
         <br />
         <div>

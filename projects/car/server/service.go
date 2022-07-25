@@ -55,7 +55,9 @@ type service struct {
 	cfg        *Config
 	car        car.Car
 	led        dev.Led
+	relay      dev.Relay
 	ledBlinked bool
+	islighton  bool
 	onMusic    bool
 	chOp       chan Op
 
@@ -99,6 +101,11 @@ func newService(cfg *Config) (*service, error) {
 		return nil, errors.New("failed to new buzzer")
 	}
 
+	relay := dev.NewRelayImp(cfg.RelayPin)
+	if relay == nil {
+		return nil, errors.New("failed to new relay")
+	}
+
 	led := dev.NewLedImp(cfg.LedPin)
 	if led == nil {
 		log.Panicf("[%v]failed to new led", logTag)
@@ -134,7 +141,9 @@ func newService(cfg *Config) (*service, error) {
 		cfg:        cfg,
 		car:        car,
 		led:        led,
+		relay:      relay,
 		ledBlinked: true,
+		islighton:  false,
 		onMusic:    false,
 		chOp:       make(chan Op, chSize),
 	}
@@ -204,6 +213,7 @@ func (s *service) shutdown() error {
 	close(s.chOp)
 	s.car.Stop()
 	s.led.Off()
+	s.relay.Off()
 	return nil
 }
 

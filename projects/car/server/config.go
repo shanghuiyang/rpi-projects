@@ -12,6 +12,7 @@ type Config struct {
 	LedPin         uint8                `json:"led"`
 	SG90DataPin    uint8                `json:"sg90"`
 	BuzzerPin      uint8                `json:"buzzer"`
+	RelayPin       uint8                `json:"relay"`
 	L298N          *L298NConfig         `json:"l298n"`
 	US100          *US100Config         `json:"us100"`
 	GY25           *GY25Config          `json:"gy25"`

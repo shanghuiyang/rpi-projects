@@ -23,6 +23,7 @@ const (
 	selfTrackingState  = "((selftracking-state))"
 	speechDrivingState = "((speechdriving-state))"
 	musicState         = "((music-state))"
+	lightState         = "((light-state))"
 	volumePattern      = "((current-volume))"
 
 	selfDrivingEnabled   = "((selfdriving-enabled))"
@@ -125,6 +126,14 @@ func (s *service) loadHomeHandler(w http.ResponseWriter, r *http.Request) {
 			sline = strings.Replace(sline, musicState, state, 1)
 		}
 
+		if strings.Contains(sline, lightState) {
+			state := "unchecked"
+			if s.islighton {
+				state = "checked"
+			}
+			sline = strings.Replace(sline, lightState, state, 1)
+		}
+
 		wbuf.Write([]byte(sline))
 	}
 	w.Write(wbuf.Bytes())
@@ -161,6 +170,18 @@ func (s *service) turnHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("[%v]turn angle: %v", logHandlerTag, angle)
 	s.car.Turn(angle)
+}
+
+func (s *service) lightOnHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("[%v]turn on the light", logHandlerTag)
+	s.relay.On()
+	s.islighton = true
+}
+
+func (s *service) lightOffHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("[%v]turn off the light", logHandlerTag)
+	s.relay.Off()
+	s.islighton = false
 }
 
 func (s *service) setVolumeHandler(w http.ResponseWriter, r *http.Request) {
