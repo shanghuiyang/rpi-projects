@@ -38,8 +38,10 @@ type L298NConfig struct {
 }
 
 type US100Config struct {
-	Dev  string `json:"dev"`
-	Baud int    `json:"baud"`
+	Dev     string `json:"dev"`
+	Baud    int    `json:"baud"`
+	TrigPin uint8  `json:"trig"`
+	EchoPin uint8  `json:"echo"`
 }
 
 type GY25Config struct {

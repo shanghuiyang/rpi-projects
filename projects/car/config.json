@@ -12,11 +12,11 @@
         "enb": 19
     },
     "us100": {
-        "dev": "/dev/ttyAMA0",
-        "baud": 9600
+        "trig": 5,
+        "echo": 6
     },
     "gy25": {
-        "dev": "/dev/ttyUSB0",
+        "dev": "/dev/ttyAMA0",
         "baud": 115200
     },
     "joystick": {
