@@ -43,11 +43,11 @@ func main() {
 }
 
 type autoFan struct {
-	servo dev.Motor
+	servo dev.ServoMotor
 	state string // on or off
 }
 
-func newAuotFan(servo dev.Motor) *autoFan {
+func newAuotFan(servo dev.ServoMotor) *autoFan {
 	servo.Roll(-90)
 	return &autoFan{
 		servo: servo,

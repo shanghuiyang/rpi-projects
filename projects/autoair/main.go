@@ -45,7 +45,7 @@ type pm25Response struct {
 }
 
 type autoAir struct {
-	serov   dev.Motor
+	serov   dev.ServoMotor
 	cloud   iot.Cloud
 	state   bool        // true: turn on, false: turn off
 	chClean chan uint16 // for turning on/off the air-cleaner
@@ -67,7 +67,7 @@ func main() {
 	autoair.start()
 }
 
-func newAutoAir(serov dev.Motor, cloud iot.Cloud) *autoAir {
+func newAutoAir(serov dev.ServoMotor, cloud iot.Cloud) *autoAir {
 	return &autoAir{
 		serov:   serov,
 		cloud:   cloud,

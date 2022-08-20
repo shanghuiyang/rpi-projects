@@ -15,7 +15,7 @@ const (
 )
 
 var (
-	stepper   dev.Stepper
+	stepper   dev.StepperMotor
 	button    dev.Button
 	cloud     iot.Cloud
 	rollAngle float64 = 360

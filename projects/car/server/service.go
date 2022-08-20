@@ -1,7 +1,6 @@
 package server
 
 import (
-	"errors"
 	"io/ioutil"
 	"log"
 
@@ -91,50 +90,26 @@ func newService(cfg *Config) (*service, error) {
 		cfg.L298N.IN3Pin,
 		cfg.L298N.IN4Pin,
 		cfg.L298N.ENAPin,
-		cfg.L298N.ENBPin)
-	if l298n == nil {
-		return nil, errors.New("failed to new L298N")
-	}
+		cfg.L298N.ENBPin,
+	)
 
+	motorL := dev.NewDCMotor(l298n.MotorA)
+	motorR := dev.NewDCMotor(l298n.MotorB)
 	buz := dev.NewBuzzerImp(cfg.BuzzerPin, dev.High)
-	if buz == nil {
-		return nil, errors.New("failed to new buzzer")
-	}
-
 	relay := dev.NewRelayImp(cfg.RelayPin)
-	if relay == nil {
-		return nil, errors.New("failed to new relay")
-	}
-
 	led := dev.NewLedImp(cfg.LedPin)
-	if led == nil {
-		log.Panicf("[%v]failed to new led", logTag)
-	}
-
 	sg90 := dev.NewSG90(cfg.SG90DataPin)
-	if sg90 == nil {
-		log.Panicf("[%v]failed to new sg90", logTag)
-	}
-
+	cam := dev.NewMotionCamera()
 	us100, err := dev.NewUS100GPIO(cfg.US100.TrigPin, cfg.US100.EchoPin)
 	if err != nil {
 		log.Panicf("[%v]new us100 error: %v", logTag, err)
 	}
-
 	gy25, err := dev.NewGY25(cfg.GY25.Dev, cfg.GY25.Baud)
 	if err != nil {
 		log.Panicf("[%v]new gy-25 error: %v", logTag, err)
 	}
 
-	cam := dev.NewMotionCamera()
-	if cam == nil {
-		log.Panicf("[%v]failed to new a camera", logTag)
-	}
-
-	car := car.NewCarImp(l298n, gy25, buz)
-	if car == nil {
-		log.Panicf("[%v]failed to new car", logTag)
-	}
+	car := car.NewCarImp(motorL, motorR, gy25, buz)
 	car.Speed(cfg.Speed)
 
 	s := &service{

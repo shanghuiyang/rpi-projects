@@ -41,7 +41,7 @@ type operator string
 type SpeechDrivingImp struct {
 	car       car.Car
 	dmeter    dev.DistanceMeter
-	servo     dev.Motor
+	servo     dev.ServoMotor
 	led       dev.Led
 	camera    dev.Camera
 	asr       speech.ASR
@@ -51,7 +51,7 @@ type SpeechDrivingImp struct {
 	inDriving bool
 }
 
-func NewSpeechDrivingImp(car car.Car, dmeter dev.DistanceMeter, servo dev.Motor, led dev.Led, cam dev.Camera, asr speech.ASR, tts speech.TTS, imgr imgr.Recognizer) *SpeechDrivingImp {
+func NewSpeechDrivingImp(car car.Car, dmeter dev.DistanceMeter, servo dev.ServoMotor, led dev.Led, cam dev.Camera, asr speech.ASR, tts speech.TTS, imgr imgr.Recognizer) *SpeechDrivingImp {
 	servo.Roll(0)
 	return &SpeechDrivingImp{
 		car:       car,

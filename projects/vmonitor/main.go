@@ -100,8 +100,8 @@ func main() {
 }
 
 type videoServer struct {
-	hServo dev.Motor
-	vServo dev.Motor
+	hServo dev.ServoMotor
+	vServo dev.ServoMotor
 	led    dev.Led
 	buzzer dev.Buzzer
 	button dev.Button
@@ -114,7 +114,7 @@ type videoServer struct {
 	pageContext []byte
 }
 
-func newVideoServer(hServo, vServo dev.Motor, led dev.Led, buzzer dev.Buzzer, button dev.Button) *videoServer {
+func newVideoServer(hServo, vServo dev.ServoMotor, led dev.Led, buzzer dev.Buzzer, button dev.Button) *videoServer {
 	v := &videoServer{
 		hServo: hServo,
 		vServo: vServo,

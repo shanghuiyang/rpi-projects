@@ -22,14 +22,16 @@ type Car interface {
 }
 
 type CarImp struct {
-	engine dev.MotorDriver
+	motorL dev.Motor
+	motorR dev.Motor
 	acc    dev.Accelerometer
 	buzzer dev.Buzzer
 }
 
-func NewCarImp(engine dev.MotorDriver, acc dev.Accelerometer, buz dev.Buzzer) *CarImp {
+func NewCarImp(motorL, motorR dev.Motor, acc dev.Accelerometer, buz dev.Buzzer) *CarImp {
 	c := &CarImp{
-		engine: engine,
+		motorL: motorL,
+		motorR: motorR,
 		acc:    acc,
 		buzzer: buz,
 	}
@@ -38,27 +40,33 @@ func NewCarImp(engine dev.MotorDriver, acc dev.Accelerometer, buz dev.Buzzer) *C
 }
 
 func (c *CarImp) Forward() {
-	c.engine.Forward()
+	c.motorL.Forward()
+	c.motorR.Forward()
 }
 
 func (c *CarImp) Backward() {
-	c.engine.Backward()
+	c.motorL.Backward()
+	c.motorR.Backward()
 }
 
 func (c *CarImp) Left() {
-	c.engine.Left()
+	c.motorL.Backward()
+	c.motorR.Forward()
 }
 
 func (c *CarImp) Right() {
-	c.engine.Right()
+	c.motorL.Forward()
+	c.motorR.Backward()
 }
 
 func (c *CarImp) Stop() {
-	c.engine.Stop()
+	c.motorL.Stop()
+	c.motorR.Stop()
 }
 
 func (c *CarImp) Speed(speed uint32) {
-	c.engine.SetSpeed(speed)
+	c.motorL.SetSpeed(speed)
+	c.motorR.SetSpeed(speed)
 }
 
 func (c *CarImp) Beep(n int, interval int) {

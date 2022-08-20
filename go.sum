@@ -29,8 +29,8 @@ github.com/shanghuiyang/imgr v0.0.0-20210817160857-e32f790bc37b h1:cQYnUImzyKqOn
 github.com/shanghuiyang/imgr v0.0.0-20210817160857-e32f790bc37b/go.mod h1:IH6u4Yme9d1qPrCSldrgTFOBoC28zSjxTMk3FwKmt/E=
 github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02 h1:pSJ+4mfA8PkMK7pg5zRQ7Cp0AXdFSL5T2kSadAjnKVo=
 github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02/go.mod h1:vKO1HTmEImIvBVfMgcEIr17njnP8LoNph369q86DKeY=
-github.com/shanghuiyang/rpi-devices v0.0.0-20220724041013-81628246312d h1:XOQpXpFfL1uXfciXTcON8e+qGnBwjmNUh6wGE0gdfoE=
-github.com/shanghuiyang/rpi-devices v0.0.0-20220724041013-81628246312d/go.mod h1:yuLAkTh4DeHF6xwJVwEAFfeXP1ZK5sJespSFYZsgx8Y=
+github.com/shanghuiyang/rpi-devices v0.0.0-20220820102721-68dba101aaae h1:y08p8r4pWDoDgEOZlHpgaLr+yHexDk2ubij/fTDxoMQ=
+github.com/shanghuiyang/rpi-devices v0.0.0-20220820102721-68dba101aaae/go.mod h1:yuLAkTh4DeHF6xwJVwEAFfeXP1ZK5sJespSFYZsgx8Y=
 github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc h1:5hPfKR7ZKPOAt6LvxASflAufM8pXp7NN8Pt4a1xoukY=
 github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc/go.mod h1:/LV7HAkvY+T2brRLydPOSz+LhomUR4rijSAfIhJBlJ4=
 github.com/stianeikeland/go-rpio/v4 v4.6.0 h1:eAJgtw3jTtvn/CqwbC82ntcS+dtzUTgo5qlZKe677EY=

@@ -30,11 +30,11 @@ type operator string
 type SelfDrivingImp struct {
 	car       car.Car
 	dmeter    dev.DistanceMeter
-	servo     dev.Motor
+	servo     dev.ServoMotor
 	indriving bool
 }
 
-func NewSelfDrivingImp(c car.Car, d dev.DistanceMeter, servo dev.Motor) *SelfDrivingImp {
+func NewSelfDrivingImp(c car.Car, d dev.DistanceMeter, servo dev.ServoMotor) *SelfDrivingImp {
 	servo.Roll(0)
 	return &SelfDrivingImp{
 		car:       c,
