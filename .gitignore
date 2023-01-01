@@ -7,6 +7,7 @@
 *.mac
 *.pi
 *.stg
+*.uf2
 /main
 /autofan
 /car
