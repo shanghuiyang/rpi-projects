@@ -24,7 +24,7 @@ type gardener struct {
 
 var (
 	gardeners []*gardener
-	buttom    dev.Button
+	button    dev.Button
 	cloud     iot.Cloud
 )
 
@@ -39,7 +39,7 @@ func main() {
 		cloud = iot.NewOnenet(cfg.Iot.Onenet)
 	}
 
-	buttom = dev.NewButtonImp(cfg.Button)
+	button = dev.NewButtonImp(cfg.Button)
 	for _, g := range cfg.Gardeners {
 		if !g.Enabled {
 			continue
@@ -80,7 +80,7 @@ func timewater() {
 
 func manwater() {
 	for {
-		if buttom.Pressed() {
+		if button.Pressed() {
 			log.Print("buttom is pressed")
 			for _, g := range gardeners {
 				go g.work()

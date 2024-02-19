@@ -7,6 +7,7 @@ require (
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551
 	github.com/gorilla/mux v1.8.0
 	github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/shanghuiyang/astar v0.0.0-20211231045947-9ae02cee4e2c
 	github.com/shanghuiyang/face v0.0.0-20210817160736-0a1cad7d4b21
 	github.com/shanghuiyang/imgr v0.0.0-20210817160857-e32f790bc37b

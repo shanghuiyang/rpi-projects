@@ -1,0 +1,10 @@
+{
+    "buzzer": 0,
+    "button": 0,
+    "cronjobs": [
+        {
+            "name": "take-medicine",
+            "schedule": "* * 9 * * *"
+        }
+    ]
+}

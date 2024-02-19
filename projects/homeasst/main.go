@@ -9,12 +9,16 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/robfig/cron/v3"
 	"github.com/shanghuiyang/rpi-devices/dev"
 	"github.com/shanghuiyang/rpi-projects/iot"
 	"github.com/shanghuiyang/rpi-projects/util"
 )
 
 const (
+	btnPin      = 0
+	buzPin      = 0
+	configJSON  = "config.json"
 	onenetToken = "your_onenet_token"
 	onenetAPI   = "http://api.heclouds.com/devices/540381180/datapoints"
 )
@@ -44,14 +48,34 @@ type pm25Response struct {
 }
 
 type homeAsst struct {
+	buz       dev.Buzzer
+	btn       dev.Button
 	dsp       dev.Display
 	cloud     iot.Cloud
+	cronjobs  []*cronjob
 	chDisplay chan *data // for disploying on oled
 	chCloud   chan *data // for pushing to iot cloud
 	// chAlert   chan *data // for alerting
 }
 
+type config struct {
+	Cronjobs []*cronjob `json:"cronjobs"`
+}
+
+type cronjob struct {
+	Name     string `json:"name"`
+	Schedule string `json:"schedule"`
+}
+
 func main() {
+	maincfg, err := loadConfig(configJSON)
+	if err != nil {
+		log.Panicf("load alarm clock config error: %v", err)
+	}
+
+	buz := dev.NewBuzzerImp(buzPin, dev.High)
+	btn := dev.NewButtonImp(btnPin)
+
 	dsp, err := dev.NewLcdDisplay(16, 2)
 	if err != nil {
 		log.Printf("failed to new lcd display, error: %v", err)
@@ -64,17 +88,20 @@ func main() {
 	}
 	onenet := iot.NewOnenet(cfg)
 
-	asst := newHomeAsst(dsp, onenet)
+	asst := newHomeAsst(buz, btn, maincfg.Cronjobs, dsp, onenet)
 	util.WaitQuit(func() {
 		asst.stop()
 	})
 	asst.start()
 }
 
-func newHomeAsst(dsp dev.Display, cloud iot.Cloud) *homeAsst {
+func newHomeAsst(buz dev.Buzzer, btn dev.Button, cronjobs []*cronjob, dsp dev.Display, cloud iot.Cloud) *homeAsst {
 	return &homeAsst{
+		buz:       buz,
+		btn:       btn,
 		dsp:       dsp,
 		cloud:     cloud,
+		cronjobs:  cronjobs,
 		chDisplay: make(chan *data, 4),
 		chCloud:   make(chan *data, 4),
 		// chAlert:   make(chan *value, 4),
@@ -82,6 +109,7 @@ func newHomeAsst(dsp dev.Display, cloud iot.Cloud) *homeAsst {
 }
 
 func (h *homeAsst) start() {
+	go h.doJobs()
 	go h.display()
 	go h.push()
 	// go h.alert()
@@ -273,4 +301,50 @@ func (h *homeAsst) getPM25() (uint16, error) {
 	}
 
 	return pm25Resp.PM25, nil
+}
+
+func (h *homeAsst) doJobs() error {
+	for _, job := range h.cronjobs {
+		log.Printf("start cron job: %v", job.Name)
+		c := cron.New()
+		c.AddFunc(job.Schedule, h.cronjobAlert)
+		c.Start()
+	}
+	return nil
+}
+
+func (h *homeAsst) cronjobAlert() {
+	trigTime := time.Now()
+	alerting := true
+	go func() {
+		for alerting {
+			h.buz.Beep(1, 200)
+		}
+	}()
+
+	for {
+		if h.btn.Pressed() {
+			alerting = false
+			break
+		}
+		timeout := time.Since(trigTime).Seconds() > 60
+		if timeout && alerting {
+			log.Printf("cron job alert timeout, stop alert")
+			alerting = false
+			break
+		}
+		util.DelayMs(100)
+	}
+}
+
+func loadConfig(file string) (*config, error) {
+	data, err := ioutil.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+	var cfg config
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		return nil, err
+	}
+	return &cfg, nil
 }

@@ -21,6 +21,8 @@ github.com/mdp/monochromeoled v0.0.0-20171027213216-a0c6b5c996cf h1:xuQA9/Ysno40
 github.com/mdp/monochromeoled v0.0.0-20171027213216-a0c6b5c996cf/go.mod h1:SrOWGGoPRa8c9Zk8hlgAcX7Y2DNrzqX4UQXny5+lCVk=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/robfig/cron/v3 v3.0.1 h1:WdRxkvbJztn8LMz/QEvLN5sBU+xKpSqwwUO1Pjr4qDs=
+github.com/robfig/cron/v3 v3.0.1/go.mod h1:eQICP3HwyT7UooqI/z+Ov+PtYAWygg1TEWWzGIFLtro=
 github.com/shanghuiyang/astar v0.0.0-20211231045947-9ae02cee4e2c h1:rfDPxmg16yYBaoumPLduoh4PLcRRrYhwuqM5ZLwiRX0=
 github.com/shanghuiyang/astar v0.0.0-20211231045947-9ae02cee4e2c/go.mod h1:b5leq+sRAkLCfpZwS5bPgu06A44+MOWwJrIianCJzDg=
 github.com/shanghuiyang/face v0.0.0-20210817160736-0a1cad7d4b21 h1:qclRSNqpkjmpR0Tginz7rJOJZ/tNr/3EBBzazqBOJCk=
