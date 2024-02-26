@@ -60,9 +60,8 @@ func main() {
 
 func play() {
 	log.Printf("going to play tv")
-	cmds := [][]byte{tvOK, tvUp, tvOK, tvDown, tvRight, tvOK, tvOK}
-	// secs := []int{5, 5, 20, 5, 5, 5, 5, 5}
-	secs := []int{2, 20, 3, 3, 3, 3, 5}
+	cmds := [][]byte{tvLeft, tvOK, tvUp, tvOK, tvDown, tvRight, tvOK, tvOK}
+	secs := []int{2, 2, 20, 3, 3, 3, 3, 5}
 	for i, cmd := range cmds {
 		log.Printf("delay %v sec", secs[i])
 		util.DelaySec(time.Duration(secs[i]))

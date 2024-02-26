@@ -8,39 +8,7 @@
 *.pi
 *.stg
 *.uf2
-/main
-/autofan
-/car
-/cpumonitor
-/gpstracker
-/heartbeat
-/memmonitor
-/tempmonitor
-/gps
-/led
-/oled
-/relay
-/stepmotor
-/temperature
-/distance
-/autolight
-/homeasst
-/air
-/dht11
-/autoair
-/ip
-/leddisplay
-/ch2o
-/ch2omonitor
-/button
-/doordog
-/*.dev
-/vmonitor
-/rlight
-/img-recognizer
-/sserver
-/uploadsvr
-/joystick
+/projects/auto-tv-remote-control/tv
 
 # Test binary, build with `go test -c`
 # *.test
