@@ -24,6 +24,8 @@ var (
 	tvDown  = []byte{0xA1, 0xF1, 0xB3, 0x4C, 0xD2}
 	tvBack  = []byte{0xA1, 0xF1, 0xB3, 0x4C, 0xC5}
 	tvSleep = []byte{0xA1, 0xF1, 0xB3, 0x4C, 0xDC}
+	tvRed   = []byte{0xB3, 0x4C, 0x84}
+	tvGreen = []byte{0xB3, 0x4C, 0x89}
 )
 
 var (
@@ -43,16 +45,36 @@ func main() {
 
 	log.Printf("get ready for working")
 	for {
+		data, err := ir.Read()
+		if err != nil || len(data) != 3 {
+			util.DelayMs(100)
+			continue
+		}
+
+		if data[0] == tvGreen[0] && data[1] == tvGreen[1] && data[2] == tvGreen[2] {
+			go buz.Beep(1, 100)
+			play()
+			util.DelaySec(1)
+		}
+
+		if data[0] == tvRed[0] && data[1] == tvRed[1] && data[2] == tvRed[2] {
+			go buz.Beep(1, 100)
+			sleep()
+			util.DelaySec(1)
+		}
+
 		if playBtn.Pressed() {
 			go buz.Beep(1, 100)
 			play()
 			util.DelaySec(1)
 		}
+
 		if sleepBtn.Pressed() {
 			go buz.Beep(1, 100)
 			sleep()
 			util.DelaySec(1)
 		}
+		
 		util.DelayMs(100)
 	}
 

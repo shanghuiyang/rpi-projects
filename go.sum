@@ -33,6 +33,8 @@ github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02 h1:pSJ+4mfA8PkM
 github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02/go.mod h1:vKO1HTmEImIvBVfMgcEIr17njnP8LoNph369q86DKeY=
 github.com/shanghuiyang/rpi-devices v0.0.0-20220820102721-68dba101aaae h1:y08p8r4pWDoDgEOZlHpgaLr+yHexDk2ubij/fTDxoMQ=
 github.com/shanghuiyang/rpi-devices v0.0.0-20220820102721-68dba101aaae/go.mod h1:yuLAkTh4DeHF6xwJVwEAFfeXP1ZK5sJespSFYZsgx8Y=
+github.com/shanghuiyang/rpi-devices v0.0.0-20240316152110-533f13aca157 h1:RyW4nuGAM2Yt31whEYr2NGs9ShDIBUVwpdNi0nmBHDc=
+github.com/shanghuiyang/rpi-devices v0.0.0-20240316152110-533f13aca157/go.mod h1:yuLAkTh4DeHF6xwJVwEAFfeXP1ZK5sJespSFYZsgx8Y=
 github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc h1:5hPfKR7ZKPOAt6LvxASflAufM8pXp7NN8Pt4a1xoukY=
 github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc/go.mod h1:/LV7HAkvY+T2brRLydPOSz+LhomUR4rijSAfIhJBlJ4=
 github.com/stianeikeland/go-rpio/v4 v4.6.0 h1:eAJgtw3jTtvn/CqwbC82ntcS+dtzUTgo5qlZKe677EY=
