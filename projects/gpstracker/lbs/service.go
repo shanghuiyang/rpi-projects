@@ -11,6 +11,7 @@ import (
 
 	sm "github.com/flopp/go-staticmaps"
 	"github.com/golang/geo/s2"
+	geojson "github.com/paulmach/go.geojson"
 	"github.com/shanghuiyang/rpi-devices/dev"
 	"github.com/shanghuiyang/rpi-projects/iot"
 	"github.com/shanghuiyang/rpi-projects/projects/gpstracker/tile"
@@ -27,6 +28,7 @@ var timer *time.Timer
 type service struct {
 	cfg             *Config
 	gps             dev.GPS
+	pathFile        string
 	display         dev.Display
 	cloud           iot.Cloud
 	logger          util.Logger
@@ -91,6 +93,7 @@ func newService(cfg *Config) (*service, error) {
 	return &service{
 		cfg:             cfg,
 		gps:             gps,
+		pathFile:        cfg.PathFile,
 		display:         display,
 		cloud:           cloud,
 		logger:          logger,
@@ -146,6 +149,11 @@ func (s *service) renderMap() {
 	ctx.SetOnline(s.cfg.Tile.Online)
 	ctx.SetSize(s.cfg.Display.Width, s.cfg.Display.Height)
 
+	path, err := s.loadPath()
+	if err != nil {
+		log.Printf("warning: failed to load path: %v", err)
+	}
+
 	updated := true
 	lastZoom := s.curZoom
 	lastProvider := s.curTileProvider
@@ -179,16 +187,43 @@ func (s *service) renderMap() {
 		updated = false
 		s.lastOpAt = time.Now()
 		s.curTileProvider.Attribution = s.statusBarText
-		marker := sm.NewMarker(
-			s2.LatLngFromDegrees(curPt.Lat, curPt.Lon),
-			color.RGBA{0xff, 0, 0, 0xff},
-			12.0,
-		)
-		ctx.ClearObjects()
-		ctx.AddObject(marker)
+
 		ctx.SetZoom(s.curZoom)
 		ctx.SetTileProvider(s.curTileProvider)
-
+		ctx.SetCenter(s2.LatLngFromDegrees(curPt.Lat, curPt.Lon))
+		
+		ctx.ClearObjects()
+		currPt := sm.NewMarker(
+			s2.LatLngFromDegrees(curPt.Lat, curPt.Lon),
+			color.RGBA{0, 0, 255, 255},
+			12.0,
+		)
+		ctx.AddObject(currPt)
+		
+		if path != nil {
+			tran, _ := ctx.Transformer()
+			dest := path.Positions[len(path.Positions)-1]
+			x, y := tran.LatLngToXY(dest)
+			if x > 0 && y > 0 {
+				destPt := sm.NewMarker(
+					path.Positions[len(path.Positions)-1],
+					color.RGBA{255, 0, 0, 255},
+					12.0,
+				)
+				ctx.AddObject(destPt)
+			}
+			
+			positions := []s2.LatLng{}
+			for _, pos := range path.Positions {
+				x, y := tran.LatLngToXY(pos)
+				if x > 0 && y > 0 {
+					positions = append(positions, pos)
+				}
+				p := sm.NewPath(positions, color.RGBA{255, 0, 255, 255}, 3)
+				ctx.AddObject(p)
+			}
+		}
+		
 		img, err := ctx.Render()
 		if err != nil {
 			log.Printf("failed to render map: %v", err)
@@ -314,6 +349,39 @@ func (s *service) setStatusBarText(text string) {
 
 	// status bar will dispear after 5s
 	timer = time.AfterFunc(5*time.Second, func() { s.statusBarText = "" })
+}
+
+func (s *service) loadPath() (*sm.Path, error) {
+	if s.pathFile == "" {
+		return nil, fmt.Errorf("path file is empty")
+	}
+	data, err := os.ReadFile(s.pathFile)
+	if err != nil {
+		return nil, err
+	}
+
+	fc, err := geojson.UnmarshalFeatureCollection(data)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(fc.Features) == 0 {
+		return nil, fmt.Errorf("no feature in the path geojson file")
+	}
+
+	if len(fc.Features) > 1 {
+		return nil, fmt.Errorf("more than one path in the path geojson file, only support one path currently")
+	}
+	if !fc.Features[0].Geometry.IsLineString() {
+		return nil, fmt.Errorf("path geometry is not a line string")
+	}
+	lonlats := fc.Features[0].Geometry.LineString
+	pts := []s2.LatLng{}
+	for _, lonlat := range lonlats {
+		lat, lon := lonlat[1], lonlat[0]
+		pts = append(pts, s2.LatLngFromDegrees(lat, lon))
+	}
+	return sm.NewPath(pts, color.RGBA{255, 0, 255, 255}, 3), nil
 }
 
 func (s *service) close() {

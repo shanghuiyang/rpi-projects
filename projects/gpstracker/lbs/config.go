@@ -13,6 +13,7 @@ type Config struct {
 	ZoomInButtonPin  uint8          `json:"zoomInButtonPin"`
 	ZoomOutButtonPin uint8          `json:"zoomOutButtonPin"`
 	GPS              *GPSConfig     `json:"gps"`
+	PathFile         string         `json:"pathFile"`
 	Display          *DisplayConfig `json:"display"`
 	IOT              *IOTConfig     `json:"iot"`
 	Tile             *TileConfig    `json:"tile"`

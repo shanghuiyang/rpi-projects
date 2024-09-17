@@ -13,6 +13,7 @@
             "source": "gps.csv"
         }
     },
+    "pathFile": "path.geojson",
     "display": {
         "res": 22,
         "dc": 17,
