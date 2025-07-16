@@ -110,8 +110,8 @@ func main() {
 
 func play() {
 	log.Printf("going to play tv")
-	ops := []string{LEFT, OK, BACK, OK, DOWN, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, DOWN, OK}
-	secs := []int{2, 2, 15, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5}
+	ops := []string{LEFT, OK, BACK, OK, DOWN, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, DOWN, DOWN, RIGHT, RIGHT, OK, DOWN, DOWN, OK}
+	secs := []int{2, 2, 18, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6, 3, 3, 3, 3, 10, 3, 3}
 	for i, op := range ops {
 		log.Printf("delay %v sec", secs[i])
 		util.DelaySec(time.Duration(secs[i]))
@@ -130,8 +130,8 @@ func play() {
 
 func sleep() {
 	log.Printf("going to sleep")
-	ops := []string{BACK, BACK, BACK, BACK, LEFT, OK, SLEEP}
-	secs := []int{3, 3, 3, 3, 3, 3, 3}
+	ops := []string{BACK, BACK, BACK, BACK, BACK, LEFT, OK, SLEEP}
+	secs := []int{3, 6, 3, 3, 3, 3, 3, 3}
 	for i, op := range ops {
 		log.Printf("delay %v sec", secs[i])
 		util.DelaySec(time.Duration(secs[i]))
