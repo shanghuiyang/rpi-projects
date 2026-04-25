@@ -7,8 +7,6 @@ import (
 	"github.com/shanghuiyang/astar/tilemap"
 	"github.com/shanghuiyang/rpi-devices/dev"
 	"github.com/shanghuiyang/rpi-projects/projects/carx/car"
-	"github.com/shanghuiyang/rpi-projects/projects/carx/selfdriving"
-	"github.com/shanghuiyang/rpi-projects/projects/carx/selfnav"
 	"github.com/shanghuiyang/rpi-projects/util"
 )
 
@@ -53,8 +51,8 @@ type service struct {
 	onMusic    bool
 	chOp       chan Op
 
-	selfdriving selfdriving.SelfDriving
-	selfnav     selfnav.SelfNav
+	selfdriving car.SelfDriving
+	selfnav     car.SelfNav
 }
 
 func newService(cfg *Config) (*service, error) {
@@ -98,12 +96,12 @@ func newService(cfg *Config) (*service, error) {
 		log.Panicf("[%v]new gy-25 error: %v", logTag, err)
 	}
 
-	car := car.NewCarImp(motorL, motorR, gy25, buz)
-	car.Speed(cfg.Speed)
+	carimp := car.NewCarImp(motorL, motorR, gy25, buz)
+	carimp.Speed(cfg.Speed)
 
 	s := &service{
 		cfg:        cfg,
-		car:        car,
+		car:        carimp,
 		led:        led,
 		relay:      relay,
 		ledBlinked: true,
@@ -113,7 +111,7 @@ func newService(cfg *Config) (*service, error) {
 	}
 
 	if cfg.SelfDriving.Enabled {
-		s.selfdriving = selfdriving.NewSelfDrivingImp(car, us100, sg90)
+		s.selfdriving = car.NewSelfDrivingImp(carimp, us100, sg90)
 	}
 
 	if cfg.SelfNav.Enabled {
@@ -126,7 +124,7 @@ func newService(cfg *Config) (*service, error) {
 			log.Panicf("[%v]failed to read map file: %v, errror: %v", logTag, cfg.SelfNav.TileMapConfig.MapFile, err)
 		}
 		m := tilemap.BuildFromStr(string(data))
-		s.selfnav = selfnav.NewSelfNavImp(car, gps, m, cfg.SelfNav.TileMapConfig.Box, cfg.SelfNav.TileMapConfig.GridSize)
+		s.selfnav = car.NewSelfNavImp(carimp, gps, m, cfg.SelfNav.TileMapConfig.Box, cfg.SelfNav.TileMapConfig.GridSize)
 	}
 
 	// if err := util.SetVolume(cfg.Volume); err != nil {

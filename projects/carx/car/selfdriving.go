@@ -1,10 +1,9 @@
-package selfdriving
+package car
 
 import (
 	"log"
 
 	"github.com/shanghuiyang/rpi-devices/dev"
-	"github.com/shanghuiyang/rpi-projects/projects/carx/car"
 	"github.com/shanghuiyang/rpi-projects/util"
 )
 
@@ -17,7 +16,7 @@ const (
 	turn     operator = "turn"
 	scan     operator = "scan"
 
-	logTag = "selfdriving"
+	logSelfDrivingTag = "selfdriving"
 )
 
 var (
@@ -27,14 +26,20 @@ var (
 
 type operator string
 
+type SelfDriving interface {
+	Start()
+	Stop()
+	InDrving() bool
+}
+
 type SelfDrivingImp struct {
-	car       car.Car
+	car       Car
 	dmeter    dev.DistanceMeter
 	servo     dev.ServoMotor
 	indriving bool
 }
 
-func NewSelfDrivingImp(c car.Car, d dev.DistanceMeter, servo dev.ServoMotor) *SelfDrivingImp {
+func NewSelfDrivingImp(c Car, d dev.DistanceMeter, servo dev.ServoMotor) *SelfDrivingImp {
 	servo.Roll(0)
 	return &SelfDrivingImp{
 		car:       c,
@@ -67,12 +72,12 @@ func (s *SelfDrivingImp) Start() {
 		case p := <-chOp:
 			op = p
 			for len(chOp) > 0 {
-				log.Printf("[%v]skip op: %v", logTag, <-chOp)
+				log.Printf("[%v]skip op: %v", logSelfDrivingTag, <-chOp)
 			}
 		default:
 			// 	do nothing
 		}
-		log.Printf("[%v]op: %v", logTag, op)
+		log.Printf("[%v]op: %v", logSelfDrivingTag, op)
 
 		switch op {
 		case backward:
@@ -92,7 +97,7 @@ func (s *SelfDrivingImp) Start() {
 		case scan:
 			fwd = false
 			mind, maxd, mindAngle, maxdAngle = s.lookingForWay()
-			log.Printf("[%v]mind=%.0f, maxd=%.0f, mindAngle=%v, maxdAngle=%v", logTag, mind, maxd, mindAngle, maxdAngle)
+			log.Printf("[%v]mind=%.0f, maxd=%.0f, mindAngle=%v, maxdAngle=%v", logSelfDrivingTag, mind, maxd, mindAngle, maxdAngle)
 			if mind < 10 && mindAngle != 90 && mindAngle != -90 && retry < 4 {
 				chOp <- backward
 				retry++
@@ -148,7 +153,7 @@ func (s *SelfDrivingImp) lookingForWay() (mind, maxd, mindAngle, maxdAngle float
 		if err != nil {
 			continue
 		}
-		log.Printf("[%v]scan: angle=%v, dist=%.0f", logTag, ang, d)
+		log.Printf("[%v]scan: angle=%v, dist=%.0f", logSelfDrivingTag, ang, d)
 		if d < mind {
 			mind = d
 			mindAngle = ang

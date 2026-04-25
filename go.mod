@@ -7,6 +7,7 @@ require (
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551
 	github.com/gorilla/mux v1.8.0
 	github.com/hybridgroup/mjpeg v0.0.0-20140228234708-4680f319790e
+	github.com/paulmach/go.geojson v1.5.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shanghuiyang/astar v0.0.0-20211231045947-9ae02cee4e2c
 	github.com/shanghuiyang/face v0.0.0-20210817160736-0a1cad7d4b21
@@ -24,7 +25,6 @@ require (
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/mdp/monochromeoled v0.0.0-20171027213216-a0c6b5c996cf // indirect
-	github.com/paulmach/go.geojson v1.5.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stianeikeland/go-rpio/v4 v4.6.0 // indirect
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07 // indirect

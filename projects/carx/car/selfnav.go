@@ -1,4 +1,4 @@
-package selfnav
+package car
 
 import (
 	"fmt"
@@ -8,18 +8,23 @@ import (
 	"github.com/shanghuiyang/astar"
 	"github.com/shanghuiyang/astar/tilemap"
 	"github.com/shanghuiyang/rpi-devices/dev"
-	"github.com/shanghuiyang/rpi-projects/projects/carx/car"
 	"github.com/shanghuiyang/rpi-projects/util"
 	"github.com/shanghuiyang/rpi-projects/util/geo"
 )
 
 const (
-	logTag     = "selfnav"
-	timeFormat = "2006-01-02T15:04:05"
+	logSelfNavTag = "selfnav"
+	timeFormat    = "2006-01-02T15:04:05"
 )
 
+type SelfNav interface {
+	Start(dest *geo.Point)
+	Stop()
+	InNaving() bool
+}
+
 type SelfNavImp struct {
-	car      car.Car
+	car      Car
 	astar    *astar.AStar
 	mapBBox  *geo.Bbox
 	gridSize float64
@@ -29,7 +34,7 @@ type SelfNavImp struct {
 	inNaving bool
 }
 
-func NewSelfNavImp(c car.Car, gps dev.GPS, tilemap *tilemap.Tilemap, bbox *geo.Bbox, gridsize float64) *SelfNavImp {
+func NewSelfNavImp(c Car, gps dev.GPS, tilemap *tilemap.Tilemap, bbox *geo.Bbox, gridsize float64) *SelfNavImp {
 	logfile := time.Now().Format(timeFormat) + ".csv"
 	gpslogger, err := util.NewGPSLogger(logfile)
 	if err != nil {
@@ -49,7 +54,7 @@ func NewSelfNavImp(c car.Car, gps dev.GPS, tilemap *tilemap.Tilemap, bbox *geo.B
 
 func (s *SelfNavImp) Start(dest *geo.Point) {
 	if dest == nil {
-		log.Printf("[%v]destination didn't be set, stop nav", logTag)
+		log.Printf("[%v]destination didn't be set, stop nav", logSelfNavTag)
 		return
 	}
 	s.inNaving = true
@@ -57,7 +62,7 @@ func (s *SelfNavImp) Start(dest *geo.Point) {
 
 	s.car.Beep(3, 300)
 	if !s.mapBBox.IsInside(dest) {
-		log.Printf("[%v]destination is outside of map boundary, nav stopped", logTag)
+		log.Printf("[%v]destination is outside of map boundary, nav stopped", logSelfNavTag)
 		return
 	}
 
@@ -65,7 +70,7 @@ func (s *SelfNavImp) Start(dest *geo.Point) {
 	for s.inNaving {
 		lat, lon, err := s.gps.Loc()
 		if err != nil {
-			log.Printf("[%v]gps sensor is not ready", logTag)
+			log.Printf("[%v]gps sensor is not ready", logSelfNavTag)
 			util.DelaySec(1)
 			continue
 		}
@@ -75,7 +80,7 @@ func (s *SelfNavImp) Start(dest *geo.Point) {
 		}
 		s.logger.Printf("%v,%.6f,%.6f\n", time.Now().Format(timeFormat), pt.Lat, pt.Lon)
 		if !s.mapBBox.IsInside(pt) {
-			log.Printf("[%v]current loc(%v) isn't in bbox(%v)", logTag, pt, s.mapBBox)
+			log.Printf("[%v]current loc(%v) isn't in bbox(%v)", logSelfNavTag, pt, s.mapBBox)
 			continue
 		}
 		org = pt
@@ -88,7 +93,7 @@ func (s *SelfNavImp) Start(dest *geo.Point) {
 
 	path, err := s.findPath(org, dest)
 	if err != nil {
-		log.Printf("[%v]failed to find a path, error: %v", logTag, err)
+		log.Printf("[%v]failed to find a path, error: %v", logSelfNavTag, err)
 		return
 	}
 	turns := s.turnPoints(path)
@@ -100,13 +105,13 @@ func (s *SelfNavImp) Start(dest *geo.Point) {
 		str += fmt.Sprintf("(%v) ", pt)
 		turnPts = append(turnPts, pt)
 	}
-	log.Printf("[%v]turn points(lat,lon): %v", logTag, str)
+	log.Printf("[%v]turn points(lat,lon): %v", logSelfNavTag, str)
 
 	s.car.Forward()
 	util.DelaySec(1)
 	for i, p := range turnPts {
 		if err := s.navTo(p); err != nil {
-			log.Printf("[%v]failed to nav to (%v), error: %v", logTag, p, err)
+			log.Printf("[%v]failed to nav to (%v), error: %v", logSelfNavTag, p, err)
 			break
 		}
 		if i < len(turnPts)-1 {
@@ -134,7 +139,7 @@ func (s *SelfNavImp) navTo(dest *geo.Point) error {
 		lat, lon, err := s.gps.Loc()
 		if err != nil {
 			s.car.Stop()
-			log.Printf("[%v]gps sensor is not ready", logTag)
+			log.Printf("[%v]gps sensor is not ready", logSelfNavTag)
 			util.DelaySec(1)
 			continue
 		}
@@ -144,19 +149,19 @@ func (s *SelfNavImp) navTo(dest *geo.Point) error {
 		}
 		if !s.mapBBox.IsInside(loc) {
 			s.car.Stop()
-			log.Printf("[%v]current loc(%v) isn't in bbox(%v)", logTag, loc, s.mapBBox)
+			log.Printf("[%v]current loc(%v) isn't in bbox(%v)", logSelfNavTag, loc, s.mapBBox)
 			util.DelaySec(1)
 			continue
 		}
 
 		s.logger.Printf("%v,%.6f,%.6f\n", time.Now().Format(timeFormat), loc.Lat, loc.Lon)
-		log.Printf("[%v]current loc: %v", logTag, loc)
+		log.Printf("[%v]current loc: %v", logSelfNavTag, loc)
 
 		d := loc.DistanceWith(s.lastLoc)
-		log.Printf("[%v]distance to last loc: %.2f m", logTag, d)
+		log.Printf("[%v]distance to last loc: %.2f m", logSelfNavTag, d)
 		if d > 4 && retry < 5 {
 			s.car.Stop()
-			log.Printf("[%v]bad gps signal, waiting for better gps signal", logTag)
+			log.Printf("[%v]bad gps signal, waiting for better gps signal", logSelfNavTag)
 			retry++
 			util.DelaySec(1)
 			continue
@@ -164,10 +169,10 @@ func (s *SelfNavImp) navTo(dest *geo.Point) error {
 
 		retry = 0
 		d = loc.DistanceWith(dest)
-		log.Printf("[%v]distance to destination: %.2f m", logTag, d)
+		log.Printf("[%v]distance to destination: %.2f m", logSelfNavTag, d)
 		if d < 4 {
 			s.car.Stop()
-			log.Printf("[%v]arrived at the destination, nav done", logTag)
+			log.Printf("[%v]arrived at the destination, nav done", logSelfNavTag)
 			return nil
 		}
 
@@ -176,7 +181,7 @@ func (s *SelfNavImp) navTo(dest *geo.Point) error {
 		if angle < 10 {
 			side = geo.MiddleSide
 		}
-		log.Printf("[%v]nav angle: %v, side: %v", logTag, angle, side)
+		log.Printf("[%v]nav angle: %v, side: %v", logSelfNavTag, angle, side)
 
 		switch side {
 		case geo.LeftSide:
