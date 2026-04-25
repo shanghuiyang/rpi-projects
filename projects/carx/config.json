@@ -1,0 +1,73 @@
+{
+    "led": 5,
+    "sg90": 18,
+    "buzzer": 7,
+    "relay": 26,
+    "l298n": {
+        "in1": 10,
+        "in2": 22,
+        "in3": 27,
+        "in4": 17,
+        "ena": 19,
+        "enb": 13
+    },
+    "us100": {
+        "trig": 3,
+        "echo": 4
+    },
+    "joystick": {
+        "enabled": false,
+        "lc12s": {
+            "dev": "/dev/ttyUSB1",
+            "baud": 115200,
+            "cs": 2
+        }
+    },
+    "selfDriving": {
+        "enabled": true
+    },
+    "SelfTracking": {
+        "enabled": false,
+        "videoURL": ":8082/tracking",
+        "lh": 33,
+        "ls": 108,
+        "lv": 138,
+        "hh": 61,
+        "hs": 255,
+        "hv": 255
+    },
+    "speechDriving": {
+        "enabled": false
+    },
+    "selfnav": {
+        "enabled": false,
+        "gps": {
+            "dev": "/dev/ttyUSB2",
+            "baud": 9600
+        },
+        "tileMap": {
+            "mapFile": "map.txt",
+            "bbox": {
+                "left": 116.444217,
+                "right": 116.444652,
+                "top": 39.956275,
+                "bottom": 39.955711
+            },
+            "gridSize": 0.000010
+        }
+    },
+    "baidu": {
+        "speech": {
+            "apiKey": "your-api-key",
+            "secretKey": "your-secret-key"
+        },
+        "image": {
+            "apiKey": "your-api-key",
+            "secretKey": "your-secret-key"
+        }
+    },
+    "volume": 40,
+    "speed": 50,
+    "host": ":8080",
+    "videoHost": ":8081"
+}
