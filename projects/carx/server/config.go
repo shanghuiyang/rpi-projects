@@ -16,10 +16,7 @@ type Config struct {
 	L298N          *L298NConfig         `json:"l298n"`
 	US100          *US100Config         `json:"us100"`
 	GY25           *GY25Config          `json:"gy25"`
-	Joystick       *JoystickConfig      `json:"joystick"`
 	SelfDriving    *SelfDrivingConfig   `json:"selfDriving"`
-	SelfTracking   *SelfTrackingConfig  `json:"SelfTracking"`
-	SpeechDriving  *SpeechDrivingConfig `json:"speechDriving"`
 	SelfNav        *SelfNavConfig       `json:"selfnav"`
 	BaiduAPIConfig *BaiduAPIConfig      `json:"baidu"`
 	Volume         int                  `json:"volume"`

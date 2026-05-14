@@ -46,6 +46,7 @@ type service struct {
 func newService(cfg *Config) (*service, error) {
 	var gps dev.GPS
 	gps, err := dev.NewHT1818GPS(cfg.GPS.Dev, cfg.GPS.Baud)
+	// gps, err := dev.NewNeo6mGPS(cfg.GPS.Dev, cfg.GPS.Baud)
 	if cfg.GPS.Simulator.Enable {
 		latlons, e := loadPoints(cfg.GPS.Simulator.Source)
 		if e != nil {
@@ -114,7 +115,6 @@ func (s *service) start() error {
 	go s.dispalyMap()
 	go s.detectLocation()
 	go s.renderMap()
-	go s.dispalyMap()
 	s.detectSleep()
 	return nil
 }
@@ -289,12 +289,12 @@ func (s *service) detectZoomInBtn() {
 				continue
 			}
 			if n > 0 {
-				n++
+				n++ // 3
 				util.DelayMs(400)
 				continue
 			}
 
-			n++
+			n++  //1
 			s.zoomIn()
 			s.setStatusBarText(fmt.Sprintf("Zoom: %v", s.curZoom))
 			log.Printf("zoom in: z = %v", s.curZoom)

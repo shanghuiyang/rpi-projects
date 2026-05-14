@@ -19,6 +19,7 @@ type Car interface {
 	Speed(speed uint32)
 	Beep(n int, interval int)
 	Turn(angle float64)
+	TurnDuration(d time.Duration)
 }
 
 type CarImp struct {
@@ -75,30 +76,42 @@ func (c *CarImp) Beep(n int, interval int) {
 
 func (c *CarImp) Turn(angle float64) {
 	turnf := c.Right
+	x := angle
 	if angle < 0 {
 		turnf = c.Left
-		angle *= (-1)
+		x *= (-1)
 	}
 
-	var dt time.Duration
+	var y float64
 	switch {
-	case angle <= 15:
-		dt = time.Millisecond * 200
-	case angle <= 30:
-		dt = time.Millisecond * 300
-	case angle <= 45:
-		dt = time.Millisecond * 400
-	case angle <= 60:
-		dt = time.Millisecond * 500
-	case angle <= 75:
-		dt = time.Millisecond * 600
-	case angle <= 90:
-		dt = time.Millisecond * 700
+	case x < 5:
+		return
+	case x <= 45:
+		y = 1.778*angle + 5.024e-15
+	case x <= 360:
+		y = -4.803e-07*x*x*x*x + 0.0004201*x*x*x - 0.1291*x*x + 20.7*x - 625
 	default:
-		dt = time.Millisecond * 400
+		log.Printf("[car]turn, invalid angle: %v > 360", angle)
+		return
 	}
-	log.Printf("[car]turn, angle: %v, time: %v", angle, dt)
+
+	dt := time.Duration(y) * time.Millisecond
+
+	log.Printf("[car]turn, angle: %v, duration: %v", angle, dt)
 	turnf()
 	time.Sleep(dt)
+	c.Stop()
+}
+
+func (c *CarImp) TurnDuration(d time.Duration) {
+	turnf := c.Right
+	if d < 0 {
+		turnf = c.Left
+		d *= (-1)
+	}
+
+	log.Printf("[car]turn, duration: %v", d)
+	turnf()
+	time.Sleep(d)
 	c.Stop()
 }

@@ -1,6 +1,6 @@
 module github.com/shanghuiyang/rpi-projects
 
-go 1.18
+go 1.26.2
 
 require (
 	github.com/flopp/go-staticmaps v0.0.0-20220221183018-c226716bec53
@@ -12,6 +12,7 @@ require (
 	github.com/shanghuiyang/astar v0.0.0-20211231045947-9ae02cee4e2c
 	github.com/shanghuiyang/face v0.0.0-20210817160736-0a1cad7d4b21
 	github.com/shanghuiyang/imgr v0.0.0-20210817160857-e32f790bc37b
+	github.com/shanghuiyang/kalman1d v0.0.0-20260426080844-5c4adbaaa1b2
 	github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02
 	github.com/shanghuiyang/rpi-devices v0.0.0-20240316152110-533f13aca157
 	github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc

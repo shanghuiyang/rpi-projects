@@ -15,34 +15,13 @@
         "trig": 3,
         "echo": 4
     },
-    "joystick": {
-        "enabled": false,
-        "lc12s": {
-            "dev": "/dev/ttyUSB1",
-            "baud": 115200,
-            "cs": 2
-        }
-    },
     "selfDriving": {
         "enabled": true
-    },
-    "SelfTracking": {
-        "enabled": false,
-        "videoURL": ":8082/tracking",
-        "lh": 33,
-        "ls": 108,
-        "lv": 138,
-        "hh": 61,
-        "hs": 255,
-        "hv": 255
-    },
-    "speechDriving": {
-        "enabled": false
     },
     "selfnav": {
         "enabled": false,
         "gps": {
-            "dev": "/dev/ttyUSB2",
+            "dev": "/dev/ttyAMA0",
             "baud": 9600
         },
         "tileMap": {
@@ -54,16 +33,6 @@
                 "bottom": 39.955711
             },
             "gridSize": 0.000010
-        }
-    },
-    "baidu": {
-        "speech": {
-            "apiKey": "your-api-key",
-            "secretKey": "your-secret-key"
-        },
-        "image": {
-            "apiKey": "your-api-key",
-            "secretKey": "your-secret-key"
         }
     },
     "volume": 40,

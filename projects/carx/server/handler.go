@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 
@@ -16,17 +17,13 @@ import (
 )
 
 const (
-	ipPattern          = "((000.000.000.000))"
-	selfDrivingState   = "((selfdriving-state))"
-	selfTrackingState  = "((selftracking-state))"
-	speechDrivingState = "((speechdriving-state))"
-	musicState         = "((music-state))"
-	lightState         = "((light-state))"
-	volumePattern      = "((current-volume))"
+	ipPattern        = "((000.000.000.000))"
+	selfDrivingState = "((selfdriving-state))"
+	musicState       = "((music-state))"
+	lightState       = "((light-state))"
+	// volumePattern    = "((current-volume))"
 
-	selfDrivingEnabled   = "((selfdriving-enabled))"
-	selfTrackingEnabled  = "((selftracking-enabled))"
-	speechDrivingEnabled = "((speechdriving-enabled))"
+	selfDrivingEnabled = "((selfdriving-enabled))"
 
 	logHandlerTag = "handler"
 )
@@ -46,12 +43,12 @@ func (s *service) loadHomeHandler(w http.ResponseWriter, r *http.Request) {
 	// 	volume = 40
 	// }
 	disabled := false
-	selfDriving, selfTracking, speechDriving := false, false, false
+	selfDriving := false
 	if s.selfdriving != nil {
 		selfDriving = s.selfdriving.InDrving()
 	}
 
-	if selfDriving || selfTracking || speechDriving {
+	if selfDriving {
 		disabled = true
 	}
 
@@ -64,9 +61,6 @@ func (s *service) loadHomeHandler(w http.ResponseWriter, r *http.Request) {
 
 		sline = strings.Replace(sline, ipPattern, ip, 1)
 		// sline = strings.Replace(sline, volumePattern, fmt.Sprintf("%v", volume), 1)
-		if selfTracking {
-			sline = strings.Replace(sline, s.cfg.VideoHost, s.cfg.SelfTracking.VideoURL, 1)
-		}
 
 		if strings.Contains(sline, selfDrivingState) {
 			state := "unchecked"
@@ -80,34 +74,6 @@ func (s *service) loadHomeHandler(w http.ResponseWriter, r *http.Request) {
 				able = "disabled"
 			}
 			sline = strings.Replace(sline, selfDrivingEnabled, able, 1)
-		}
-
-		if strings.Contains(sline, selfTrackingState) {
-			state := "unchecked"
-			if selfTracking {
-				state = "checked"
-			}
-			sline = strings.Replace(sline, selfTrackingState, state, 1)
-
-			able := "enabled"
-			if state == "unchecked" && disabled {
-				able = "disabled"
-			}
-			sline = strings.Replace(sline, selfTrackingEnabled, able, 1)
-		}
-
-		if strings.Contains(sline, speechDrivingState) {
-			state := "unchecked"
-			if speechDriving {
-				state = "checked"
-			}
-			sline = strings.Replace(sline, speechDrivingState, state, 1)
-
-			able := "enabled"
-			if state == "unchecked" && disabled {
-				able = "disabled"
-			}
-			sline = strings.Replace(sline, speechDrivingEnabled, able, 1)
 		}
 
 		if strings.Contains(sline, musicState) {
@@ -144,13 +110,13 @@ func (s *service) opHandler(w http.ResponseWriter, r *http.Request) {
 	s.chOp <- op
 }
 
-func (s *service) turnHandler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("[%v]turn", logHandlerTag)
+func (s *service) turnAngleHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("[%v]turn in a angle(degree)", logHandlerTag)
 	vars := mux.Vars(r)
-	a, ok := vars["angle"]
+	a, ok := vars["degree"]
 	if !ok {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "invalid angle: %v", vars["angle"])
+		fmt.Fprintf(w, "invalid angle: %v", vars["degree"])
 		return
 	}
 	angle, err := strconv.ParseFloat(a, 64)
@@ -162,6 +128,26 @@ func (s *service) turnHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("[%v]turn angle: %v", logHandlerTag, angle)
 	s.car.Turn(angle)
+}
+
+func (s *service) turnDurationHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("[%v]turn in a duration(millisecond)", logHandlerTag)
+	vars := mux.Vars(r)
+	d, ok := vars["millisecond"]
+	if !ok {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "invalid angle: %v", vars["millisecond"])
+		return
+	}
+	duration, err := strconv.ParseInt(d, 10, 64)
+	if err != nil {
+		log.Printf("[%v]invalid duration: %v", logHandlerTag, d)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "invalid duration: %v", d)
+		return
+	}
+	log.Printf("[%v]turn duration: %v", logHandlerTag, duration)
+	s.car.TurnDuration(time.Duration(duration) * time.Millisecond)
 }
 
 func (s *service) lightOnHandler(w http.ResponseWriter, r *http.Request) {

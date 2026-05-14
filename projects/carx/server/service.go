@@ -23,7 +23,7 @@ const (
 	defaultSpeed            = 30
 	defaultHost             = ":8080"
 	defaultVideoHost        = ":8081"
-	defaultTrackingVideoURL = ":8082/tracking"
+	// defaultTrackingVideoURL = ":8082/tracking"
 )
 
 type Op string
@@ -68,9 +68,6 @@ func newService(cfg *Config) (*service, error) {
 	if cfg.VideoHost == "" {
 		cfg.Host = defaultVideoHost
 	}
-	if cfg.SelfTracking.VideoURL == "" {
-		cfg.SelfTracking.VideoURL = defaultTrackingVideoURL
-	}
 
 	l298n := dev.NewL298N(
 		cfg.L298N.IN1Pin,
@@ -91,12 +88,12 @@ func newService(cfg *Config) (*service, error) {
 	if err != nil {
 		log.Panicf("[%v]new us100 error: %v", logTag, err)
 	}
-	gy25, err := dev.NewGY25(cfg.GY25.Dev, cfg.GY25.Baud)
-	if err != nil {
-		log.Panicf("[%v]new gy-25 error: %v", logTag, err)
-	}
+	// gy25, err := dev.NewGY25(cfg.GY25.Dev, cfg.GY25.Baud)
+	// if err != nil {
+	// 	log.Panicf("[%v]new gy-25 error: %v", logTag, err)
+	// }
 
-	carimp := car.NewCarImp(motorL, motorR, gy25, buz)
+	carimp := car.NewCarImp(motorL, motorR, nil, buz)
 	carimp.Speed(cfg.Speed)
 
 	s := &service{
