@@ -1,12 +1,8 @@
 package car
 
 import (
-	"fmt"
 	"log"
-	"os"
-	"time"
 
-	"github.com/shanghuiyang/kalman1d"
 	"github.com/shanghuiyang/rpi-devices/dev"
 	"github.com/shanghuiyang/rpi-projects/util"
 )
@@ -21,15 +17,6 @@ const (
 	scan     operator = "scan"
 
 	logSelfDrivingTag = "selfdriving"
-)
-
-const (
-	trueV      = -30.0 // cm/s (negative means distance is decreasing)
-	initPosVar = 200.0
-	initVelVar = 2000.0
-	sigmaZ     = 7.0   // cm, measurement noise std-dev
-	sigmaA     = 100.0 // cm/s^2, process noise std-dev (acceleration)
-	gateNSigma = 3.5   // typical values: 3~4
 )
 
 var (
@@ -182,29 +169,6 @@ func (s *SelfDrivingImp) lookingForWay() (mind, maxd, mindAngle, maxdAngle float
 }
 
 func (s *SelfDrivingImp) lookingForObs(chOp chan operator) {
-
-	cfg := &kalman1d.Config{
-		InitX:            0,
-		InitV:            trueV,
-		InitPosVar:       initPosVar,
-		InitVelVar:       initVelVar,
-		SigmaA:           sigmaA,
-		SigmaZ:           sigmaZ,
-		GateNSigma:       gateNSigma,
-		OutlierInflation: 100,
-	}
-
-	var kFilter *kalman1d.Filter
-
-	now := time.Now().Unix()
-	createdFile := true
-	f, err := os.OpenFile(fmt.Sprintf("dist_%v.csv", now), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
-	if err != nil {
-		log.Printf("[%v]create file error: %v", logSelfDrivingTag, err)
-		createdFile = true
-	}
-	f.WriteString("raw,est\n")
-
 	defer func() {
 		s.car.Speed(50)
 	}()
@@ -223,35 +187,11 @@ func (s *SelfDrivingImp) lookingForObs(chOp chan operator) {
 				continue
 			}
 
-			if kFilter == nil {
-				cfg.InitX = d
-				kFilter = kalman1d.NewFilter(cfg)
-			}
-
-			est := kFilter.Update(d, 0.155)
-			log.Printf("[%v]raw distance=%.2f, estimated=%.2f", logSelfDrivingTag, d, est)
-			if createdFile {
-				f.WriteString(fmt.Sprintf("%.2f,%.2f\n", d, est))
-			}
-
-			switch {
-			case est < 70:
-				s.car.Speed(35)
-			case est < 65:
-				s.car.Speed(30)
-			case est < 60:
-				s.car.Speed(25)
-			case est < 55:
-				s.car.Speed(20)
-			case est < 50:
-				s.car.Speed(20)
-			}
-
-			if est < 20 {
+			if d < 20 {
 				chOp <- backward
 				return
 			}
-			if est < 40 {
+			if d < 40 {
 				chOp <- stop
 				return
 			}

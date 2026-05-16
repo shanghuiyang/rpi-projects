@@ -87,9 +87,9 @@ func (c *CarImp) Turn(angle float64) {
 	case x < 5:
 		return
 	case x <= 45:
-		y = 1.778*angle + 5.024e-15
+		y = 0.001481*x*x*x - 0.1778*x*x + 11*x - 4.019e-14
 	case x <= 360:
-		y = -4.803e-07*x*x*x*x + 0.0004201*x*x*x - 0.1291*x*x + 20.7*x - 625
+		y = -1.922e-07*x*x*x*x + 0.0001511*x*x*x - 0.04016*x*x + 8.541*x - 53.57
 	default:
 		log.Printf("[car]turn, invalid angle: %v > 360", angle)
 		return
