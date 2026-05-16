@@ -7,4 +7,4 @@ nohup ./ip > ip.log 2>&1 &
 
 popd
 
-sudo motion -c /home/pi/motion-remote.conf
+sudo motion
