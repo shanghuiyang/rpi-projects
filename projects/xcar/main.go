@@ -6,7 +6,7 @@ package main
 import (
 	"log"
 
-	"github.com/shanghuiyang/rpi-projects/projects/carx/server"
+	"github.com/shanghuiyang/rpi-projects/projects/xcar/server"
 )
 
 const configJSON = "config.json"

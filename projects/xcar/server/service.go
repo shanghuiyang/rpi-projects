@@ -6,7 +6,7 @@ import (
 
 	"github.com/shanghuiyang/astar/tilemap"
 	"github.com/shanghuiyang/rpi-devices/dev"
-	"github.com/shanghuiyang/rpi-projects/projects/carx/car"
+	"github.com/shanghuiyang/rpi-projects/projects/xcar/car"
 	"github.com/shanghuiyang/rpi-projects/util"
 )
 
@@ -18,12 +18,10 @@ const (
 	stop     Op = "stop"
 	beep     Op = "beep"
 
-	chSize                  = 8
-	defaultVolume           = 40
-	defaultSpeed            = 30
-	defaultHost             = ":8080"
-	defaultVideoHost        = ":8081"
-	// defaultTrackingVideoURL = ":8082/tracking"
+	chSize           = 8
+	defaultSpeed     = 30
+	defaultHost      = ":8080"
+	defaultVideoHost = ":8081"
 )
 
 type Op string
@@ -59,9 +57,6 @@ func newService(cfg *Config) (*service, error) {
 	if cfg.Speed == 0 {
 		cfg.Speed = defaultSpeed
 	}
-	if cfg.Volume == 0 {
-		cfg.Volume = defaultVolume
-	}
 	if cfg.Host == "" {
 		cfg.Host = defaultHost
 	}
@@ -88,10 +83,6 @@ func newService(cfg *Config) (*service, error) {
 	if err != nil {
 		log.Panicf("[%v]new us100 error: %v", logTag, err)
 	}
-	// gy25, err := dev.NewGY25(cfg.GY25.Dev, cfg.GY25.Baud)
-	// if err != nil {
-	// 	log.Panicf("[%v]new gy-25 error: %v", logTag, err)
-	// }
 
 	carimp := car.NewCarImp(motorL, motorR, nil, buz)
 	carimp.Speed(cfg.Speed)

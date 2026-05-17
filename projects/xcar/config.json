@@ -35,7 +35,6 @@
             "gridSize": 0.000010
         }
     },
-    "volume": 40,
     "speed": 50,
     "host": ":8080",
     "videoHost": ":8081"
