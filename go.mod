@@ -14,7 +14,7 @@ require (
 	github.com/shanghuiyang/imgr v0.0.0-20210817160857-e32f790bc37b
 	github.com/shanghuiyang/kalman1d v0.0.0-20260426080844-5c4adbaaa1b2
 	github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02
-	github.com/shanghuiyang/rpi-devices v0.0.0-20240316152110-533f13aca157
+	github.com/shanghuiyang/rpi-devices v0.0.0-20260523131139-54510d9cd632
 	github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc
 	github.com/stretchr/testify v1.8.0
 	gocv.io/x/gocv v0.23.0
@@ -31,9 +31,9 @@ require (
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07 // indirect
 	github.com/tkrajina/gpxgo v1.1.2 // indirect
 	golang.org/x/exp v0.0.0-20210526181343-b47a03e3048a // indirect
-	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
+	golang.org/x/image v0.18.0 // indirect
 	golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9 // indirect
-	golang.org/x/sys v0.0.0-20210423082822-04245dca01da // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+	golang.org/x/text v0.16.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

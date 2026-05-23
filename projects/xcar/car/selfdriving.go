@@ -178,11 +178,6 @@ func (s *SelfDrivingImp) lookingForObs(chOp chan operator) {
 			s.servo.Roll(angle)
 			util.DelayMs(150)
 			d, err := s.dmeter.Dist()
-			for i := 0; err != nil && i < 3; i++ {
-				log.Printf("[%v]get distance error: %v", logSelfDrivingTag, err)
-				util.DelayMs(150)
-				d, err = s.dmeter.Dist()
-			}
 			if err != nil {
 				continue
 			}
