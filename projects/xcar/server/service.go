@@ -83,8 +83,12 @@ func newService(cfg *Config) (*service, error) {
 	if err != nil {
 		log.Panicf("[%v]new us100 error: %v", logTag, err)
 	}
+	gy25z, err := dev.NewGY25Z(cfg.GY25Z.Dev, cfg.GY25Z.Baud)
+	if err != nil {
+		log.Panicf("[%v]new gy-25z error: %v", logTag, err)
+	}
 
-	carimp := car.NewCarImp(motorL, motorR, nil, buz)
+	carimp := car.NewCarImp(motorL, motorR, gy25z, buz)
 	carimp.Speed(cfg.Speed)
 
 	s := &service{

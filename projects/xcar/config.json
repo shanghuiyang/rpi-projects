@@ -15,6 +15,10 @@
         "trig": 3,
         "echo": 4
     },
+    "gy25z": {
+        "dev": "/dev/ttyAMA0",
+        "baud": 115200
+    },
     "selfDriving": {
         "enabled": true
     },

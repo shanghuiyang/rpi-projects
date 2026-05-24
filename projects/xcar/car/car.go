@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/shanghuiyang/rpi-devices/dev"
+	"github.com/shanghuiyang/rpi-projects/util"
 )
 
 const defaultSpeed = 30
@@ -75,6 +76,39 @@ func (c *CarImp) Beep(n int, interval int) {
 }
 
 func (c *CarImp) Turn(angle float64) {
+	turnf := c.Right
+	if angle < 0 {
+		turnf = c.Left
+		angle *= (-1)
+	}
+
+	yaw, _, _, err := c.acc.Angles()
+	if err != nil {
+		log.Printf("[car]failed to get angles from gy-25, error: %v", err)
+		return
+	}
+
+	turnf()
+	retry := 0
+	ang := 0.0
+	coeff := 2.0
+	for ang < angle {
+		yaw2, _, _, err := c.acc.Angles()
+		if err != nil {
+			log.Printf("[car]failed to get angles from gy-25, error: %v", err)
+			if retry < 3 {
+				retry++
+				continue
+			}
+			break
+		}
+		ang = coeff * util.IncludedAngle(yaw, yaw2)
+		log.Printf("target angle: %.2f, start angle: %.2f, current angle: %.2f, turned angle: %.2f", angle, yaw, yaw2, ang)
+	}
+	c.Stop()
+}
+
+func (c *CarImp) TurnWithoutSensor(angle float64) {
 	turnf := c.Right
 	x := angle
 	if angle < 0 {

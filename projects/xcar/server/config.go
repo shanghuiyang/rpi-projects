@@ -9,20 +9,20 @@ import (
 
 // Config ...
 type Config struct {
-	LedPin         uint8                `json:"led"`
-	SG90DataPin    uint8                `json:"sg90"`
-	BuzzerPin      uint8                `json:"buzzer"`
-	RelayPin       uint8                `json:"relay"`
-	L298N          *L298NConfig         `json:"l298n"`
-	US100          *US100Config         `json:"us100"`
-	GY25           *GY25Config          `json:"gy25"`
-	SelfDriving    *SelfDrivingConfig   `json:"selfDriving"`
-	SelfNav        *SelfNavConfig       `json:"selfnav"`
-	BaiduAPIConfig *BaiduAPIConfig      `json:"baidu"`
-	Volume         int                  `json:"volume"`
-	Speed          uint32               `json:"speed"`
-	Host           string               `json:"host"`
-	VideoHost      string               `json:"videoHost"`
+	LedPin         uint8              `json:"led"`
+	SG90DataPin    uint8              `json:"sg90"`
+	BuzzerPin      uint8              `json:"buzzer"`
+	RelayPin       uint8              `json:"relay"`
+	L298N          *L298NConfig       `json:"l298n"`
+	US100          *US100Config       `json:"us100"`
+	GY25Z          *GY25ZConfig       `json:"gy25z"`
+	SelfDriving    *SelfDrivingConfig `json:"selfDriving"`
+	SelfNav        *SelfNavConfig     `json:"selfnav"`
+	BaiduAPIConfig *BaiduAPIConfig    `json:"baidu"`
+	Volume         int                `json:"volume"`
+	Speed          uint32             `json:"speed"`
+	Host           string             `json:"host"`
+	VideoHost      string             `json:"videoHost"`
 }
 
 type L298NConfig struct {
@@ -42,6 +42,11 @@ type US100Config struct {
 }
 
 type GY25Config struct {
+	Dev  string `json:"dev"`
+	Baud int    `json:"baud"`
+}
+
+type GY25ZConfig struct {
 	Dev  string `json:"dev"`
 	Baud int    `json:"baud"`
 }

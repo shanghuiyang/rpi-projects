@@ -39,6 +39,8 @@ github.com/shanghuiyang/rpi-devices v0.0.0-20240316152110-533f13aca157 h1:RyW4nu
 github.com/shanghuiyang/rpi-devices v0.0.0-20240316152110-533f13aca157/go.mod h1:yuLAkTh4DeHF6xwJVwEAFfeXP1ZK5sJespSFYZsgx8Y=
 github.com/shanghuiyang/rpi-devices v0.0.0-20260523131139-54510d9cd632 h1:KA0Pi3wS0vf77GwuH1OmFkqVvKKuI2k8n1EZ7xLKXUE=
 github.com/shanghuiyang/rpi-devices v0.0.0-20260523131139-54510d9cd632/go.mod h1:6aZ5nI35Er1/I/7Fx/fapEa5X8yLrgHukEe6mnBhkEo=
+github.com/shanghuiyang/rpi-devices v0.0.0-20260524091421-8b8f3255c61a h1:HtIoC9yxc/AYObjASs/hFvkSJUyJy7vY/Mfwl4UwE4U=
+github.com/shanghuiyang/rpi-devices v0.0.0-20260524091421-8b8f3255c61a/go.mod h1:6aZ5nI35Er1/I/7Fx/fapEa5X8yLrgHukEe6mnBhkEo=
 github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc h1:5hPfKR7ZKPOAt6LvxASflAufM8pXp7NN8Pt4a1xoukY=
 github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc/go.mod h1:/LV7HAkvY+T2brRLydPOSz+LhomUR4rijSAfIhJBlJ4=
 github.com/stianeikeland/go-rpio/v4 v4.6.0 h1:eAJgtw3jTtvn/CqwbC82ntcS+dtzUTgo5qlZKe677EY=

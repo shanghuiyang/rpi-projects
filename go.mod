@@ -14,7 +14,7 @@ require (
 	github.com/shanghuiyang/imgr v0.0.0-20210817160857-e32f790bc37b
 	github.com/shanghuiyang/kalman1d v0.0.0-20260426080844-5c4adbaaa1b2
 	github.com/shanghuiyang/oauth v0.0.0-20210815163430-0403e002fe02
-	github.com/shanghuiyang/rpi-devices v0.0.0-20260523131139-54510d9cd632
+	github.com/shanghuiyang/rpi-devices v0.0.0-20260524091421-8b8f3255c61a
 	github.com/shanghuiyang/speech v0.0.0-20210817161045-10b0f14692dc
 	github.com/stretchr/testify v1.8.0
 	gocv.io/x/gocv v0.23.0
