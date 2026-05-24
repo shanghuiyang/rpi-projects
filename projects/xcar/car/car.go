@@ -88,11 +88,13 @@ func (c *CarImp) Turn(angle float64) {
 		return
 	}
 
-	turnf()
+	
 	retry := 0
 	ang := 0.0
-	coeff := 2.0
 	for ang < angle {
+		turnf()
+		time.Sleep(100*time.Millisecond)
+		c.Stop()
 		yaw2, _, _, err := c.acc.Angles()
 		if err != nil {
 			log.Printf("[car]failed to get angles from gy-25, error: %v", err)
@@ -102,10 +104,9 @@ func (c *CarImp) Turn(angle float64) {
 			}
 			break
 		}
-		ang = coeff * util.IncludedAngle(yaw, yaw2)
+		ang = util.IncludedAngle(yaw, yaw2)
 		log.Printf("target angle: %.2f, start angle: %.2f, current angle: %.2f, turned angle: %.2f", angle, yaw, yaw2, ang)
 	}
-	c.Stop()
 }
 
 func (c *CarImp) TurnWithoutSensor(angle float64) {
